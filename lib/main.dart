@@ -17,7 +17,60 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // routes: routes,
-      // home: MainPage(),
+       home: LayoutBasic(),
+    );
+  }
+}
+
+
+class LayoutBasic extends StatelessWidget {
+  const LayoutBasic({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      body: Container(
+         padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // Cột 1
+              Expanded(
+                flex: 1,
+                child: Container(
+                  width: 12,
+                  height: 400,
+                  color: Colors.blue,
+                 // padding: const EdgeInsets.all(16.0),
+                  child: const Center(
+                    child: Text(
+                      'Column 1',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 100.0),
+              // Cột 2
+              Expanded(
+                flex: 1,
+                child: Container(
+                  width: 100,
+                  height: 400,
+                  color: Colors.green,
+                  padding: EdgeInsets.all(16.0),
+                  child: const Center(
+                    child: Text(
+                      'Column 23232',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+      ),
     );
   }
 }

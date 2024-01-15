@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // routes: routes,
-      // home: MainPage(),
+       home: LayoutBasic(),
     );
   }
 }
@@ -30,7 +30,7 @@ class LayoutBasic extends StatelessWidget{
         body: Container(
 
         ),
-    )
+    );
   }
 
 }
