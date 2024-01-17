@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/LayoutDemo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,43 +33,104 @@ class LayoutBasic extends StatelessWidget {
     return Scaffold(
       body: Container(
          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Column(
             children: [
-              // Cột 1
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: 12,
-                  height: 400,
-                  color: Colors.blue,
-                 // padding: const EdgeInsets.all(16.0),
-                  child: const Center(
-                    child: Text(
-                      'Column 1',
-                      style: TextStyle(color: Colors.white),
+              Container(
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                  children: [
+                    // Cột 1
+                    Expanded(
+
+                      flex: 1,
+                      child: Container(
+                        width: 12,
+                        height: 400,
+                        color: Colors.blue,
+                        // padding: const EdgeInsets.all(16.0),
+                        child: const Center(
+                          child: Text(
+                            'Column 1',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 100.0),
+                    // Cột 2
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: 100,
+                        height: 400,
+                        color: Colors.green,
+                        padding: EdgeInsets.all(16.0),
+                        child: const Center(
+                          child: Text(
+                            'Column 23232',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 100.0),
-              // Cột 2
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: 100,
-                  height: 400,
-                  color: Colors.green,
-                  padding: EdgeInsets.all(16.0),
-                  child: const Center(
-                    child: Text(
-                      'Column 23232',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
+              const SizedBox(height: 50.0),
+              ElevatedButton(
+                onPressed: () {
+                  // Navigate to the second layout
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NextPage1()),
+                  );
+                },
+                child: const Text('Go to Second Layout'),
               ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Cột 1
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: 12,
+                        height: 400,
+                        color: Colors.blue,
+                        // padding: const EdgeInsets.all(16.0),
+                        child: const Center(
+                          child: Text(
+                            'Column 1',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 100.0),
+                    // Cột 2
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: 100,
+                        height: 400,
+                        color: Colors.green,
+                        padding: EdgeInsets.all(16.0),
+                        child: const Center(
+                          child: Text(
+                            'Column 23232',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
+
           ),
       ),
     );
