@@ -84,10 +84,10 @@ class LayoutBasic extends StatelessWidget {
                   // Navigate to the second layout
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => NextPage1()),
+                    MaterialPageRoute(builder: (context) => Crud()),
                   );
                 },
-                child: const Text('Go to Second Layout'),
+                child: const Text('Go to CRUD'),
               ),
               Container(
                 child: Row(

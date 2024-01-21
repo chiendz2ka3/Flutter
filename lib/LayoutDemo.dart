@@ -1,41 +1,152 @@
+// KindaCode.com
+// main.dart
 import 'package:flutter/material.dart';
-class NextPage1 extends StatelessWidget {
+
+import 'SQLHelper.dart';
+class Crud extends StatefulWidget {
+  const Crud({Key? key}) : super(key: key);
+
+  @override
+  State<Crud> createState() => _CrudState();
+}
+
+class _CrudState extends State<Crud> {
+  // All journals
+  List<Map<String, dynamic>> _journals = [];
+
+  bool _isLoading = true;
+  // This function is used to fetch all data from the database
+  void _refreshJournals() async {
+    final data = await SQLHelper.getItems();
+    setState(() {
+      _journals = data;
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshJournals(); // Loading the diary when the app starts
+  }
+
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  void _showForm(int? id) async {
+    if (id != null) {
+      final existingJournal =
+      _journals.firstWhere((element) => element['id'] == id);
+      _titleController.text = existingJournal['title'];
+      _descriptionController.text = existingJournal['description'];
+    }
+
+    showModalBottomSheet(
+        context: context,
+        elevation: 5,
+        isScrollControlled: true,
+        builder: (_) => Container(
+          padding: EdgeInsets.only(
+            top: 15,
+            left: 15,
+            right: 15,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 120,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(hintText: 'Title'),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(hintText: 'Description'),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  // Save new journal
+                  if (id == null) {
+                    await _addItem();
+                  }
+
+                  if (id != null) {
+                    await _updateItem(id);
+                  }
+                  _titleController.text = '';
+                  _descriptionController.text = '';
+                  if (!mounted) return;
+                  Navigator.of(context).pop();
+                },
+                child: Text(id == null ? 'Create New' : 'Update'),
+              )
+            ],
+          ),
+        ));
+  }
+  Future<void> _addItem() async {
+    await SQLHelper.createItem(
+        _titleController.text, _descriptionController.text);
+    _refreshJournals();
+  }
+  Future<void> _updateItem(int id) async {
+    await SQLHelper.updateItem(
+        id, _titleController.text, _descriptionController.text);
+    _refreshJournals();
+  }
+  void _deleteItem(int id) async {
+    await SQLHelper.deleteItem(id);
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Successfully deleted a journal!'),
+    ));
+    _refreshJournals();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Flutter Layout'),
+        title: const Text('Crud'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Welcome to Flutter!',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16.0),
-            Image.network(
-              'https://example.com/your_image_url.jpg',
-              width: 200.0,
-              height: 200.0,
-              fit: BoxFit.cover,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the second layout
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NextPage1()),
-                );
-              },
-              child: const Text('Go to Second Layout'),
-            ),
-            SizedBox(height: 16.0),
-
-          ],
+      body: _isLoading
+          ? const Center(
+        child: CircularProgressIndicator(),
+      )
+          : ListView.builder(
+        itemCount: _journals.length,
+        itemBuilder: (context, index) => Card(
+          color: Colors.orange[200],
+          margin: const EdgeInsets.all(15),
+          child: ListTile(
+              title: Text(_journals[index]['title']),
+              subtitle: Text(_journals[index]['description']),
+              trailing: SizedBox(
+                width: 100,
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () => _showForm(_journals[index]['id']),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () =>
+                          _deleteItem(_journals[index]['id']),
+                    ),
+                  ],
+                ),
+              )),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () => _showForm(null),
       ),
     );
   }
