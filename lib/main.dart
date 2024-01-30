@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/LayoutDemo.dart';
 
+import 'HomeExaml.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -84,10 +86,21 @@ class LayoutBasic extends StatelessWidget {
                   // Navigate to the second layout
                   Navigator.push(
                     context,
+                    MaterialPageRoute(builder: (context) => MyScreen()),
+                  );
+                },
+                child: const Text('Go to Examl'),
+              ),
+              // const SizedBox(width: 5.0),
+              ElevatedButton(
+                onPressed: () {
+                  // Navigate to the second layout
+                  Navigator.push(
+                    context,
                     MaterialPageRoute(builder: (context) => Crud()),
                   );
                 },
-                child: const Text('Go to CRUD'),
+                child: const Text('Go To Crud'),
               ),
               Container(
                 child: Row(
